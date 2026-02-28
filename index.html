@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=0.5, maximum-scale=3.0">
+    <title>Kingdoms of Life: Master Edition</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&family=Orbitron:wght@700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <div id="main-menu" class="overlay">
+        <div class="menu-box" style="padding: 30px 50px;">
+            <h1 class="game-title">KINGDOMS OF <span class="highlight">LIFE</span></h1>
+            <p class="subtitle">วิวัฒนาการ • เอาชีวิตรอด • แข่งกับเวลา</p>
+
+            <div id="mode-selection" style="margin-top: 20px;">
+                <div style="display: flex; gap: 15px; justify-content: center; margin-bottom: 20px;">
+                    <button class="btn-start" onclick="startGame('tutorial', 1)"
+                        style="flex: 1; padding: 15px; font-size: 16px;">🎓 โหมดฝึกสอน<br><span
+                            style="font-size: 12px; font-weight: normal;">เล่นกับบอท 1 ตัว
+                            (เหมาะสำหรับผู้เริ่มต้น)</span></button>
+                    <button class="btn-cancel" onclick="showRealGameOptions()"
+                        style="flex: 1; padding: 15px; font-size: 16px; border-color: var(--blue); color: var(--blue);">⚔️
+                        โหมดเล่นจริง<br><span style="font-size: 12px; font-weight: normal;">แข่งขันยึดครองพื้นที่กับบอท
+                            1-4 ตัว</span></button>
+                </div>
+                <button class="btn-encyclopedia" onclick="openEncyclopedia()" style="width: 100%;">📖
+                    สารานุกรมสิ่งมีชีวิต</button>
+            </div>
+
+            <div id="real-game-options" class="hidden" style="margin-top: 20px;">
+                <h3 style="color: var(--blue); margin-bottom: 10px;">ตั้งค่าคู่ต่อสู้</h3>
+
+                <p style="color:#94a3b8;font-size:13px;margin-bottom:8px;">เลือกระดับความยากของบอท</p>
+                <div style="display:flex;justify-content:center;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+                    <button class="btn-encyclopedia diff-btn" id="diff-easy" onclick="selectDifficulty('easy')">🟢
+                        Easy</button>
+                    <button class="btn-encyclopedia diff-btn active-btn" id="diff-normal"
+                        onclick="selectDifficulty('normal')">🟡 Normal</button>
+                    <button class="btn-encyclopedia diff-btn" id="diff-hard" onclick="selectDifficulty('hard')">🟠
+                        Hard</button>
+                    <button class="btn-encyclopedia diff-btn" id="diff-expert" onclick="selectDifficulty('expert')">🔴
+                        Expert</button>
+                </div>
+
+                <p style="color:#94a3b8;font-size:13px;margin-bottom:8px;">เลือกจำนวนคู่ต่อสู้</p>
+                <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 20px;">
+                    <button class="btn-encyclopedia bot-select-btn" onclick="selectBotCount(1)">1 บอท</button>
+                    <button class="btn-encyclopedia bot-select-btn" onclick="selectBotCount(2)">2 บอท</button>
+                    <button class="btn-encyclopedia bot-select-btn" onclick="selectBotCount(3)">3 บอท</button>
+                    <button class="btn-encyclopedia bot-select-btn" onclick="selectBotCount(4)">4 บอท</button>
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    <button class="btn-start" id="start-real-game-btn"
+                        onclick="startGame('real', selectedBotCount, selectedDifficulty)" disabled
+                        style="opacity: 0.5;">เข้าสู่สนามรบ</button>
+                    <button class="btn-cancel" onclick="hideRealGameOptions()">ย้อนกลับ</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="encyclopedia-modal" class="overlay hidden" style="z-index: 4000;">
+        <div class="encyclopedia-box">
+            <h2 class="highlight" style="font-family: 'Orbitron'; margin-top:0;">BIO-ENCYCLOPEDIA</h2>
+            <p style="color: #94a3b8; margin-bottom: 20px;">ค้นพบแล้ว (<span id="unlocked-count">0</span>/60)</p>
+            <div id="encyclopedia-grid" class="pokedex-grid"></div>
+            <button class="btn-cancel" style="margin-top: 20px;" onclick="closeEncyclopedia()">ปิดหน้าต่าง</button>
+        </div>
+    </div>
+
+    <div id="card-info-modal" class="overlay hidden" style="z-index: 3000;">
+        <div class="effect-box">
+            <div id="info-type" class="effect-type">CARD INFO</div>
+            <div id="info-visual" class="modal-card-showcase"></div>
+            <h2 id="info-title" class="highlight" style="margin-top: 15px;">ชื่อการ์ด</h2>
+            <div id="info-stats" class="info-stats hidden">HP: 0 | POW: 0</div>
+            <p id="info-desc" class="modal-desc">รายละเอียดเอฟเฟค...</p>
+            <div style="margin-top: 25px;">
+                <button id="btn-use-effect" class="btn-start hidden">⚡ ร่ายการ์ดนี้</button>
+                <button class="btn-cancel" onclick="closeCardInfo()">ปิดหน้าต่าง</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-over" class="overlay hidden" style="z-index: 5000;">
+        <div class="menu-box">
+            <h1 id="winner-text" class="game-title">ผู้ชนะคือ...</h1>
+            <button class="btn-start" onclick="location.reload()">เล่นอีกครั้ง</button>
+        </div>
+    </div>
+
+    <div id="battle-log"></div>
+
+    <div id="game-container" class="hidden">
+
+        <header id="hud">
+            <div class="score-box player">YOU: <span id="p-score">0</span>/5</div>
+
+            <div class="central-hud">
+                <div id="timer-box" class="timer-box">⏳ <span id="time-left">30</span>s</div>
+
+                <div class="turn-box">
+                    <div id="turn-indicator">เตรียมพร้อม...</div>
+                    <div class="ap-badge">AP: <span id="ap-count">3</span></div>
+                </div>
+
+                <div id="weather-box" class="weather-indicator">
+                    <span id="weather-icon">🌍</span> <span id="weather-text">Normal</span>
+                </div>
+
+                <button id="mute-btn" onclick="toggleSound()" class="mute-btn">🔊</button>
+                <button onclick="openHistory()" class="mute-btn" title="ดูประวัติการเล่น">📜</button>
+                <button id="quit-btn" onclick="quitGame()" class="mute-btn"
+                    style="color: var(--red); border-color: var(--red);" title="ยอมแพ้ / ออกจากเกม">&#10060;</button>
+            </div>
+
+            <div class="score-box bot">BOT: <span id="b-score">0</span>/5</div>
+        </header>
+
+        <!-- Tutorial Overlay -->
+        <div id="tutorial-overlay" class="overlay hidden" style="z-index: 6000; background: rgba(0,0,0,0.85);">
+            <div class="menu-box"
+                style="position: relative; max-width: 600px; padding: 40px; border-color: var(--gold); box-shadow: 0 0 30px rgba(251, 191, 36, 0.3);">
+                <div
+                    style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); background: var(--gold); color: black; padding: 5px 20px; border-radius: 20px; font-weight: bold; font-family: var(--font-head);">
+                    TUTORIAL SYSTEM</div>
+                <h2 id="tutorial-title" class="highlight" style="margin-bottom: 20px; font-size: 1.8rem;">
+                    ยินดีต้อนรับสู่ Kingdoms of Life</h2>
+                <div id="tutorial-content"
+                    style="font-size: 1.1rem; line-height: 1.6; text-align: left; margin-bottom: 30px; color: #e2e8f0; min-height: 120px;">
+                    <!-- ข้อความฝึกสอนจะแทรกที่นี่ -->
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span id="tutorial-step-counter" style="color: #94a3b8; font-size: 0.9rem;">ขั้นตอนที่ 1/5</span>
+                    <button id="tutorial-next-btn" class="btn-start" onclick="nextTutorialStep()"
+                        style="padding: 10px 30px; font-size: 16px;">ถัดไป ➡️</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="board-viewport">
+            <!-- 🔍 Zoom Controls -->
+            <div id="zoom-controls">
+                <button class="zoom-btn" onclick="boardZoom(0.15)" title="ขยาย">＋</button>
+                <button class="zoom-btn" id="zoom-label" onclick="boardZoomReset()" title="รีเซ็ต">100%</button>
+                <button class="zoom-btn" onclick="boardZoom(-0.15)" title="ย่อ">－</button>
+            </div>
+
+            <main id="board">
+                <div class="board-title-banner">อาณาจักรสิ่งมีชีวิต 5 อาณาจักร</div>
+
+                <div class="kingdom-zone monera-theme" id="Monera">
+                    <div class="zone-title"><span class="zone-en">Kingdom monera</span><span
+                            class="zone-th">อาณาจักรมอเนอรา</span></div>
+                    <div class="slots"></div>
+                </div>
+                <div class="kingdom-zone protista-theme" id="Protista">
+                    <div class="zone-title"><span class="zone-en">Kingdom protista</span><span
+                            class="zone-th">อาณาจักรโพรทิสตา</span></div>
+                    <div class="slots"></div>
+                </div>
+                <div class="kingdom-zone fungi-theme" id="Fungi">
+                    <div class="zone-title"><span class="zone-en">Kingdom fungi</span><span
+                            class="zone-th">อาณาจักรฟังไจ</span></div>
+                    <div class="slots"></div>
+                </div>
+                <div class="kingdom-zone plantae-theme" id="Plantae">
+                    <div class="zone-title"><span class="zone-en">Kingdom plantae</span><span
+                            class="zone-th">อาณาจักรพืช</span></div>
+                    <div class="slots"></div>
+                </div>
+                <div class="kingdom-zone animalia-theme" id="Animalia">
+                    <div class="zone-title"><span class="zone-en">Kingdom animalia</span><span
+                            class="zone-th">อาณาจักรสัตว์</span></div>
+                    <div class="slots"></div>
+                </div>
+            </main>
+        </div>
+
+
+        <footer id="hand-area">
+            <button id="reset-hand-btn" class="btn-reset"
+                onclick="resetHand()">เปลี่ยนไพ่<br><small>(ข้ามเทิร์น)</small></button>
+            <div id="player-hand"></div>
+            <button id="end-turn-btn" class="btn-end" onclick="endTurn()">จบเทิร์น</button>
+        </footer>
+
+    </div>
+
+    <!-- History Panel -->
+    <div id="history-panel" class="history-panel hidden">
+        <div class="history-header">
+            <span>📜 ประวัติการเล่น</span>
+            <button onclick="openHistory()" class="mute-btn" style="font-size:12px;padding:2px 8px">✕</button>
+        </div>
+        <div id="history-content"></div>
+    </div>
+
+    <script src="organisms.js"></script>
+    <script src="effects.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
