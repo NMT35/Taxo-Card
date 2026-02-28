@@ -1,0 +1,72 @@
+// organisms.js
+const ORGANISM_DATA = [
+    // --- อาณาจักร MONERA (12 ใบ) ---
+    { id: "monera_01", name: "Methanogen", kingdom: "Monera", hp: 3, power: 1, description: "Archaea: อยู่ในที่ไร้ออกซิเจน ทนทานต่อแก๊สพิษ", image: "assets/organisms/monera_01.png", action: "none" },
+    { id: "monera_02", name: "Methanogen", kingdom: "Monera", hp: 3, power: 1, description: "Archaea: อยู่ในที่ไร้ออกซิเจน ทนทานต่อแก๊สพิษ", image: "assets/organisms/monera_02.png", action: "none" },
+    { id: "monera_03", name: "Halophile", kingdom: "Monera", hp: 2, power: 1, description: "Archaea: ทนความเค็มจัด ไม่ได้รับผลจากน้ำท่วม/ภัยแล้ง", image: "assets/organisms/monera_03.png", action: "none" },
+    { id: "monera_04", name: "Rhizobium", kingdom: "Monera", hp: 2, power: 2, description: "Nitrogen-fixing: ตรึงไนโตรเจน ฟื้นฟู +1 AP เมื่อลงสนาม", image: "assets/organisms/monera_04.png", action: "gain_ap_1" },
+    { id: "monera_05", name: "Rhizobium", kingdom: "Monera", hp: 2, power: 2, description: "Nitrogen-fixing: ตรึงไนโตรเจน ฟื้นฟู +1 AP เมื่อลงสนาม", image: "assets/organisms/monera_05.png", action: "gain_ap_1" },
+    { id: "monera_06", name: "Anabaena", kingdom: "Monera", hp: 2, power: 1, description: "Cyanobacteria: มี Heterocyst ตรึงไนโตรเจน HP +1 ทุกเทิร์น", image: "assets/organisms/monera_06.png", action: "regen_hp" },
+    { id: "monera_07", name: "Anabaena", kingdom: "Monera", hp: 2, power: 1, description: "Cyanobacteria: มี Heterocyst ตรึงไนโตรเจน HP +1 ทุกเทิร์น", image: "assets/organisms/monera_07.png", action: "regen_hp" },
+    { id: "monera_08", name: "Lactobacillus", kingdom: "Monera", hp: 1, power: 1, description: "Fermentation: หมักกรดแลคติก ฟื้นฟู +1 AP เมื่อลงสนาม", image: "assets/organisms/monera_08.png", action: "gain_ap_1" },
+    { id: "monera_09", name: "Lactobacillus", kingdom: "Monera", hp: 1, power: 1, description: "Fermentation: หมักกรดแลคติก ฟื้นฟู +1 AP เมื่อลงสนาม", image: "assets/organisms/monera_09.png", action: "gain_ap_1" },
+    { id: "monera_10", name: "Streptococcus", kingdom: "Monera", hp: 1, power: 2, description: "Pathogen: เชื้อโรคร้ายแรง โจมตีการ์ดบอทสุ่ม 1 ใบด้วย POW 2", image: "assets/organisms/monera_10.png", action: "damage_bot_random" },
+    { id: "monera_11", name: "Bacillus", kingdom: "Monera", hp: 4, power: 1, description: "Endospore: สร้างสปอร์ป้องกันตัว ดูดซับ damage ครั้งแรกได้", image: "assets/organisms/monera_11.png", action: "shield_1" },
+    { id: "monera_12", name: "Agrobacterium", kingdom: "Monera", hp: 2, power: 1, description: "Genetic Transfer: ถ่ายโอนยีน ฟื้นฟู +1 AP เมื่อลงสนาม", image: "assets/organisms/monera_12.png", action: "gain_ap_1" },
+
+    // --- อาณาจักร PROTISTA (12 ใบ) ---
+    { id: "protista_01", name: "Amoeba", kingdom: "Protista", hp: 2, power: 1, description: "Protozoa: เคลื่อนที่ด้วย Pseudopodium อย่างอิสระ", image: "assets/organisms/protista_01.png", action: "none" },
+    { id: "protista_02", name: "Amoeba", kingdom: "Protista", hp: 2, power: 1, description: "Protozoa: เคลื่อนที่ด้วย Pseudopodium อย่างอิสระ", image: "assets/organisms/protista_02.png", action: "none" },
+    { id: "protista_03", name: "Paramecium", kingdom: "Protista", hp: 2, power: 1, description: "Protozoa: ใช้ Cilia หลบหลีกการโจมตี", image: "assets/organisms/protista_03.png", action: "none" },
+    { id: "protista_04", name: "Paramecium", kingdom: "Protista", hp: 2, power: 1, description: "Protozoa: ใช้ Cilia หลบหลีกการโจมตี", image: "assets/organisms/protista_04.png", action: "none" },
+    { id: "protista_05", name: "Euglena", kingdom: "Protista", hp: 2, power: 2, description: "Mixotroph: สังเคราะห์แสงและกินอาหารได้ ฟื้นฟู +1 AP", image: "assets/organisms/protista_05.png", action: "gain_ap_1" },
+    { id: "protista_06", name: "Plasmodium", kingdom: "Protista", hp: 1, power: 2, description: "Apicomplexa: ปรสิตมาลาเรีย โจมตีการ์ด Animalia บอทด้วย POW 2", image: "assets/organisms/protista_06.png", action: "damage_bot_animalia" },
+    { id: "protista_07", name: "Diatom", kingdom: "Protista", hp: 3, power: 2, description: "Chrysophyta: เปลือกซิลิกา ดูดซับ damage ครั้งแรก", image: "assets/organisms/protista_07.png", action: "shield_1" },
+    { id: "protista_08", name: "Diatom", kingdom: "Protista", hp: 3, power: 2, description: "Chrysophyta: เปลือกซิลิกา ดูดซับ damage ครั้งแรก", image: "assets/organisms/protista_08.png", action: "shield_1" },
+    { id: "protista_09", name: "Dinoflagellate", kingdom: "Protista", hp: 1, power: 3, description: "Red Tide: ปล่อยสารพิษ โจมตีการ์ดบอทสุ่ม 1 ใบด้วย POW 3", image: "assets/organisms/protista_09.png", action: "damage_bot_random" },
+    { id: "protista_10", name: "Chlorella", kingdom: "Protista", hp: 1, power: 2, description: "Chlorophyta: สังเคราะห์แสงขั้นสูง ฟื้นฟู +1 AP", image: "assets/organisms/protista_10.png", action: "gain_ap_1" },
+    { id: "protista_11", name: "Slime Mold", kingdom: "Protista", hp: 2, power: 2, description: "Myxomycota: ราเมือกล่า Monera โจมตีการ์ด Monera บอทด้วย POW 2", image: "assets/organisms/protista_11.png", action: "damage_bot_monera" },
+    { id: "protista_12", name: "Slime Mold", kingdom: "Protista", hp: 2, power: 2, description: "Myxomycota: ราเมือกล่า Monera โจมตีการ์ด Monera บอทด้วย POW 2", image: "assets/organisms/protista_12.png", action: "damage_bot_monera" },
+
+    // --- อาณาจักร FUNGI (12 ใบ) ---
+    { id: "fungi_01", name: "Rhizopus", kingdom: "Fungi", hp: 1, power: 1, description: "Zygomycota: สปอร์แพร่เร็วมาก ฟื้นฟู +1 AP เมื่อลงสนาม", image: "assets/organisms/fungi_01.png", action: "gain_ap_1" },
+    { id: "fungi_02", name: "Rhizopus", kingdom: "Fungi", hp: 1, power: 1, description: "Zygomycota: สปอร์แพร่เร็วมาก ฟื้นฟู +1 AP เมื่อลงสนาม", image: "assets/organisms/fungi_02.png", action: "gain_ap_1" },
+    { id: "fungi_03", name: "Saccharomyces", kingdom: "Fungi", hp: 1, power: 1, description: "Ascomycota: ยีสต์หมักพลังงาน ฟื้นฟู +1 AP เมื่อลงสนาม", image: "assets/organisms/fungi_03.png", action: "gain_ap_1" },
+    { id: "fungi_04", name: "Saccharomyces", kingdom: "Fungi", hp: 1, power: 1, description: "Ascomycota: ยีสต์หมักพลังงาน ฟื้นฟู +1 AP เมื่อลงสนาม", image: "assets/organisms/fungi_04.png", action: "gain_ap_1" },
+    { id: "fungi_05", name: "Penicillium", kingdom: "Fungi", hp: 2, power: 2, description: "Ascomycota: ผลิตเพนิซิลลิน โจมตีการ์ด Monera บอทด้วย POW 2", image: "assets/organisms/fungi_05.png", action: "damage_bot_monera" },
+    { id: "fungi_06", name: "Mushroom", kingdom: "Fungi", hp: 2, power: 2, description: "Basidiomycota: ย่อยซากอินทรีย์ ฟื้นฟู +1 AP เมื่อลงสนาม", image: "assets/organisms/fungi_06.png", action: "gain_ap_1" },
+    { id: "fungi_07", name: "Mushroom", kingdom: "Fungi", hp: 2, power: 2, description: "Basidiomycota: ย่อยซากอินทรีย์ ฟื้นฟู +1 AP เมื่อลงสนาม", image: "assets/organisms/fungi_07.png", action: "gain_ap_1" },
+    { id: "fungi_08", name: "Lingzhi", kingdom: "Fungi", hp: 3, power: 1, description: "เห็ดหลินจือ: เสริมภูมิต้านทาน HP +1 ทุกเทิร์น", image: "assets/organisms/fungi_08.png", action: "regen_hp" },
+    { id: "fungi_09", name: "Lichen", kingdom: "Fungi", hp: 4, power: 2, description: "Symbiosis: ไลเคน อยู่รอดในที่โหดร้าย ดูดซับ damage ครั้งแรก", image: "assets/organisms/fungi_09.png", action: "shield_1" },
+    { id: "fungi_10", name: "Lichen", kingdom: "Fungi", hp: 4, power: 2, description: "Symbiosis: ไลเคน อยู่รอดในที่โหดร้าย ดูดซับ damage ครั้งแรก", image: "assets/organisms/fungi_10.png", action: "shield_1" },
+    { id: "fungi_11", name: "Cordyceps", kingdom: "Fungi", hp: 2, power: 3, description: "Parasitic: ราแมลง โจมตีการ์ด Animalia บอทด้วย POW 3", image: "assets/organisms/fungi_11.png", action: "damage_bot_animalia" },
+    { id: "fungi_12", name: "Mycorrhiza", kingdom: "Fungi", hp: 1, power: 1, description: "Symbiosis: ไมซีลจับรากพืช ฟื้นฟู +1 AP เมื่อลงสนาม", image: "assets/organisms/fungi_12.png", action: "gain_ap_1" },
+
+    // --- อาณาจักร PLANTAE (12 ใบ) ---
+    { id: "plantae_01", name: "Moss", kingdom: "Plantae", hp: 3, power: 1, description: "Bryophyte: มอสดูดซับน้ำ HP +1 ทุกเทิร์น", image: "assets/organisms/plantae_01.png", action: "regen_hp" },
+    { id: "plantae_02", name: "Moss", kingdom: "Plantae", hp: 3, power: 1, description: "Bryophyte: มอสดูดซับน้ำ HP +1 ทุกเทิร์น", image: "assets/organisms/plantae_02.png", action: "regen_hp" },
+    { id: "plantae_03", name: "Fern", kingdom: "Plantae", hp: 3, power: 2, description: "Pteridophyte: สปอร์ใต้ใบ — ฟื้นฟู +1 AP เมื่อลงสนาม", image: "assets/organisms/plantae_03.png", action: "gain_ap_1" },
+    { id: "plantae_04", name: "Fern", kingdom: "Plantae", hp: 3, power: 2, description: "Pteridophyte: สปอร์ใต้ใบ — ฟื้นฟู +1 AP เมื่อลงสนาม", image: "assets/organisms/plantae_04.png", action: "gain_ap_1" },
+    { id: "plantae_05", name: "Equisetum", kingdom: "Plantae", hp: 4, power: 1, description: "หญ้าถอดปล้อง: ลำตัวแข็งแรงมาก ดูดซับ damage ครั้งแรก", image: "assets/organisms/plantae_05.png", action: "shield_1" },
+    { id: "plantae_06", name: "Ginkgo", kingdom: "Plantae", hp: 5, power: 2, description: "Gymnosperm: แปะก๊วยทนทาน HP +1 ทุกเทิร์น", image: "assets/organisms/plantae_06.png", action: "regen_hp" },
+    { id: "plantae_07", name: "Pinus", kingdom: "Plantae", hp: 4, power: 2, description: "Gymnosperm: สนสองใบทนสภาพอากาศ ดูดซับ damage ครั้งแรก", image: "assets/organisms/plantae_07.png", action: "shield_1" },
+    { id: "plantae_08", name: "Pinus", kingdom: "Plantae", hp: 4, power: 2, description: "Gymnosperm: สนสองใบทนสภาพอากาศ ดูดซับ damage ครั้งแรก", image: "assets/organisms/plantae_08.png", action: "shield_1" },
+    { id: "plantae_09", name: "Orchid", kingdom: "Plantae", hp: 2, power: 3, description: "Angiosperm: กล้วยไม้ฟื้นฟู +1 AP เมื่อลงสนาม", image: "assets/organisms/plantae_09.png", action: "gain_ap_1" },
+    { id: "plantae_10", name: "Orchid", kingdom: "Plantae", hp: 2, power: 3, description: "Angiosperm: กล้วยไม้ฟื้นฟู +1 AP เมื่อลงสนาม", image: "assets/organisms/plantae_10.png", action: "gain_ap_1" },
+    { id: "plantae_11", name: "Sunflower", kingdom: "Plantae", hp: 2, power: 2, description: "Angiosperm: ทานตะวันรับแสงแดด ฟื้นฟู +1 AP เมื่อลงสนาม", image: "assets/organisms/plantae_11.png", action: "gain_ap_1" },
+    { id: "plantae_12", name: "Mangrove", kingdom: "Plantae", hp: 5, power: 2, description: "Angiosperm: โกงกางทนต่อทุกสภาพ HP +1 ทุกเทิร์น", image: "assets/organisms/plantae_12.png", action: "regen_hp" },
+
+    // --- อาณาจักร ANIMALIA (12 ใบ) ---
+    { id: "animalia_01", name: "Sponge", kingdom: "Animalia", hp: 4, power: 1, description: "Porifera: ฟองน้ำดูดซับแรง ดูดซับ damage ครั้งแรก", image: "assets/organisms/animalia_01.png", action: "shield_1" },
+    { id: "animalia_02", name: "Jellyfish", kingdom: "Animalia", hp: 2, power: 2, description: "Cnidaria: เข็มพิษแมงกะพรุน โจมตีการ์ดบอทสุ่ม 1 ใบด้วย POW 2", image: "assets/organisms/animalia_02.png", action: "damage_bot_random" },
+    { id: "animalia_03", name: "Jellyfish", kingdom: "Animalia", hp: 2, power: 2, description: "Cnidaria: เข็มพิษแมงกะพรุน โจมตีการ์ดบอทสุ่ม 1 ใบด้วย POW 2", image: "assets/organisms/animalia_03.png", action: "damage_bot_random" },
+    { id: "animalia_04", name: "Planaria", kingdom: "Animalia", hp: 1, power: 1, description: "Platyhelminthes: พลังงอกใหม่ HP +1 ทุกเทิร์น", image: "assets/organisms/animalia_04.png", action: "regen_hp" },
+    { id: "animalia_05", name: "Earthworm", kingdom: "Animalia", hp: 2, power: 1, description: "Annelida: ไส้เดือนพรวนดิน ฟื้นฟู +1 AP เมื่อลงสนาม", image: "assets/organisms/animalia_05.png", action: "gain_ap_1" },
+    { id: "animalia_06", name: "Earthworm", kingdom: "Animalia", hp: 2, power: 1, description: "Annelida: ไส้เดือนพรวนดิน ฟื้นฟู +1 AP เมื่อลงสนาม", image: "assets/organisms/animalia_06.png", action: "gain_ap_1" },
+    { id: "animalia_07", name: "Squid", kingdom: "Animalia", hp: 3, power: 3, description: "Mollusca: หมึกพ่นหมึก ดูดซับ damage ครั้งแรก", image: "assets/organisms/animalia_07.png", action: "shield_1" },
+    { id: "animalia_08", name: "Honeybee", kingdom: "Animalia", hp: 1, power: 1, description: "Arthropoda: ผึ้งผสมเกสร ฟื้นฟู +1 AP เมื่อลงสนาม", image: "assets/organisms/animalia_08.png", action: "gain_ap_1" },
+    { id: "animalia_09", name: "Honeybee", kingdom: "Animalia", hp: 1, power: 1, description: "Arthropoda: ผึ้งผสมเกสร ฟื้นฟู +1 AP เมื่อลงสนาม", image: "assets/organisms/animalia_09.png", action: "gain_ap_1" },
+    { id: "animalia_10", name: "Shark", kingdom: "Animalia", hp: 4, power: 4, description: "Chondrichthyes: ฉลามดุร้าย โจมตีการ์ดบอทสุ่ม 1 ใบด้วย POW 4", image: "assets/organisms/animalia_10.png", action: "damage_bot_random" },
+    { id: "animalia_11", name: "Human", kingdom: "Animalia", hp: 5, power: 5, description: "Mammalia: มนุษย์ฉลาด โจมตีการ์ดบอทสุ่ม 1 ใบด้วย POW 5", image: "assets/organisms/animalia_11.png", action: "damage_bot_random" },
+    { id: "animalia_12", name: "Elephant", kingdom: "Animalia", hp: 6, power: 4, description: "Mammalia: ช้างโจมตี โจมตีการ์ดบอทสุ่ม 1 ใบด้วย POW 4", image: "assets/organisms/animalia_12.png", action: "damage_bot_random" }
+];
